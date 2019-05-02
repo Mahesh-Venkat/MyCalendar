@@ -1,0 +1,198 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'jacoco-android'
+apply plugin: 'kotlin-kapt'
+
+apply from: 'dependencies.gradle'
+
+configurations.all {
+    resolutionStrategy.force 'com.android.support:support-annotations:23.4.0'
+}
+
+android {
+    testOptions {
+        unitTests.all {
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+    }
+
+    File lifeCycle = rootProject.file('lifecycle.properties')
+    Properties properties = new Properties()
+    properties.load(new FileInputStream(lifeCycle))
+    signingConfigs {
+        release {
+            storeFile rootProject.file(properties['keystore'])
+            storePassword properties['storePassword']
+            keyAlias properties['keyAlias']
+            keyPassword properties['keyPassword']
+        }
+    }
+    testOptions {
+        unitTests.includeAndroidResources = true
+        unitTests.returnDefaultValues = true
+    }
+
+    buildTypes {
+        debug {
+            ext.alwaysUpdateBuildId = false
+
+            ndk {
+                testCoverageEnabled = true
+                abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86-64"
+            }
+            manifestPlaceholders = [
+                    ServiceUrl          : properties['debug_testURL'],
+                    ServiceUrl2: properties['debug_testURL1'],
+                    MobileAppUserName   : properties['debug_MobileAppUserName'],
+                    MobileAppPassword   : properties['debug_MobileAppPassword']
+            ]
+        }
+        dev {
+            ndk {
+                abiFilters "armeabi-v7a", "arm64-v8a", "x86"
+            }
+            debuggable false
+            minifyEnabled true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            manifestPlaceholders = [
+                    ServiceUrl       : properties['dev_testURL'],
+                    ServiceUrl2      : properties['dev_testURL1'],
+                    MobileAppUserName: properties['dev_MobileAppUserName'],
+                    MobileAppPassword: properties['dev_MobileAppPassword']
+            ]
+        }
+        qa {
+            ndk {
+                abiFilters "armeabi-v7a", "arm64-v8a", "x86"
+            }
+            //multiDexKeepFile file('multidex-config.txt') Incase if you have to multi dex a file
+            debuggable false
+            minifyEnabled true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' Incase if you have a progaurd file
+            signingConfig signingConfigs.release
+            manifestPlaceholders = [
+                    ServiceUrl       : properties['qa_testURL'],
+                    ServiceUrl2      : properties['qa_testURL1'],
+                    MobileAppUserName: properties['qa_MobileAppUserName'],
+                    MobileAppPassword: properties['qa_MobileAppPassword']
+            ]
+        }
+        release {
+            ndk {
+                abiFilters "armeabi-v7a", "arm64-v8a"
+            }
+            //multiDexKeepFile file('multidex-config.txt')
+            debuggable false
+            minifyEnabled true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            manifestPlaceholders = [
+                    ServiceUrl       : properties['prod_testURL'],
+                    ServiceUrl2      : properties['prod_testURL1'],
+                    MobileAppUserName: properties['prod_MobileAppUserName'],
+                    MobileAppPassword: properties['prod_MobileAppPassword']
+            ]
+        }
+    }
+
+    compileSdkVersion versions.compileSdkVersion
+    defaultConfig {
+        applicationId "com.maheshvenkat.myapplication"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetedSdkVersion
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled = true
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+    buildToolsVersion = versions.buildToolsVersion
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation androidDependencies.appCompat
+    implementation androidDependencies.constraintLayout
+    implementation androidDependencies.kotlin
+    implementation androidDependencies.moshi
+    implementation androidDependencies.jodaTime
+    implementation androidDependencies.annotations
+    implementation androidDependencies.design
+    implementation androidDependencies.percent
+    implementation androidDependencies.nineoldandroids
+    implementation androidDependencies.playServicesAnalytics
+    implementation androidDependencies.playServicesLocation
+    implementation androidDependencies.recyclerview
+    implementation androidDependencies.butterKnife
+    implementation androidDependencies.cardView
+    implementation androidDependencies.support
+    implementation androidDependencies.okHttp
+    implementation(androidDependencies.glide) {
+        exclude group: "com.android.support"
+    }
+
+    testImplementation testDependencies.jUnit
+    testImplementation testDependencies.robolectric
+    testImplementation testDependencies.robolectric_multidex
+    testImplementation testDependencies.jUnit
+    testImplementation testDependencies.mockWebServer
+    testImplementation testDependencies.jUnit
+    testImplementation testDependencies.powerMockito
+    testImplementation testDependencies.powerMockitoModule
+    testImplementation testDependencies.powerMockitoApi
+    testImplementation testDependencies.mockitoCore,
+            { exclude group: 'net.bytebuddy' }
+    testImplementation testDependencies.mockitoInLine
+
+    androidTestImplementation testDependencies.hamcrestLibrary
+    androidTestImplementation testDependencies.jUnit
+    // Optional -- UI testing with Espresso
+    androidTestImplementation(testDependencies.androidXEspressoContrib) {
+        // Resolved java.lang.NoClassDefFoundError: your.package.name.EspressoTargetActivity
+        // 'espresso-contrib' has already 'support-v4' package.
+        exclude group: testDependencies.androidSupport, module: testDependencies.supportModuleV4
+        // Resolved java.lang.IllegalAccessError: Class ref in pre-verified class resolved to unexpected implementation
+        // 'espresso-contrib' has already 'recyclerview-v7' package.
+        exclude group: testDependencies.androidSupport, module: testDependencies.supportModuleRecyclerViewV7
+    }
+    androidTestImplementation testDependencies.androidXCore
+    // Core library
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation testDependencies.androidXTestRunner
+    androidTestImplementation testDependencies.androidXTestRules
+    androidTestImplementation testDependencies.androidXTestRunner
+    androidTestImplementation testDependencies.androidXEspressoCore
+    androidTestImplementation testDependencies.hamcrestLibrary
+    androidTestImplementation testDependencies.uiAutomator
+    androidTestImplementation testDependencies.uiAutomator
+    androidTestImplementation testDependencies.mockitoInLine
+    androidTestImplementation testDependencies.linkedInMokitoDexMaker
+    androidTestImplementation testDependencies.androidXExtJUnit
+    androidTestImplementation testDependencies.androidXExtTruth
+    androidTestImplementation testDependencies.googleTruth
+    androidTestImplementation testDependencies.androidXEspressoIntent
+    androidTestImplementation testDependencies.androidXEspressoAccessibility
+    androidTestImplementation testDependencies.androidXEspressoIdling
+    androidTestImplementation testDependencies.androidXEspressoSpecialIdling
+    androidTestUtil testDependencies.androidXTestOrchestar
+    androidTestImplementation testDependencies.mockitoCoreAndroid
+
+    kapt androidDependencies.glide_compiler
+    kapt androidDependencies.butterKnifeCompiler
+}
