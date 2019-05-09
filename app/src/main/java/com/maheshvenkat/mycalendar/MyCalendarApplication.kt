@@ -1,4 +1,4 @@
-package com.maheshvenkat.myapplication
+package com.maheshvenkat.mycalendar
 
 import android.content.Context
 import android.content.Intent
@@ -16,7 +16,7 @@ import java.security.KeyManagementException
 import java.security.NoSuchAlgorithmException
 import javax.net.ssl.SSLContext
 
-class MyApplication : MultiDexApplication() {
+class MyCalendarApplication : MultiDexApplication() {
 
 
     override fun onCreate() {

@@ -1,4 +1,4 @@
-package com.maheshvenkat.myapplication;
+package com.maheshvenkat.mycalendar;
 
 import org.junit.Test;
 

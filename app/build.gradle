@@ -102,7 +102,7 @@ android {
 
     compileSdkVersion versions.compileSdkVersion
     defaultConfig {
-        applicationId "com.maheshvenkat.myapplication"
+        applicationId "com.maheshvenkat.mycalendar"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetedSdkVersion
         versionCode 1
@@ -110,6 +110,8 @@ android {
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
+
+        resValue "string", "calendly_api_key", (project.findProperty("calendly_api_key") ?: "")
     }
     compileOptions {
         sourceCompatibility = '1.8'
@@ -146,6 +148,8 @@ dependencies {
     implementation(androidDependencies.glide) {
         exclude group: "com.android.support"
     }
+    implementation androidDependencies.materialDesign
+    implementation androidDependencies.dayViewTemplate
 
     testImplementation testDependencies.jUnit
     testImplementation testDependencies.robolectric

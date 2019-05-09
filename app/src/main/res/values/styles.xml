@@ -8,4 +8,38 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="textView_title_style">
+        <item name="android:fontFamily">@font/varela</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+    </style>
+
+    <style name="textView_subhead_style">
+        <item name="android:fontFamily">@font/varela</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+    </style>
+
+    <style name="textView_body2_style">
+        <item name="android:fontFamily">@font/opensans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:color">@android:color/black</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
+    </style>
+
+    <style name="textView_body1_style">
+        <item name="android:textStyle">normal</item>
+        <item name="android:color">@android:color/black</item>
+        <item name="android:lineSpacingExtra">1sp</item>
+        <item name="android:fontFamily">@font/opensans</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+    </style>
+
+    <style name="textView_caption_style">
+        <item name="android:textStyle">normal</item>
+        <item name="android:color">@color/helper_text_color_gray</item>
+        <item name="android:lineSpacingExtra">1sp</item>
+        <item name="android:fontFamily">@font/opensans</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+    </style>
+
 </resources>
