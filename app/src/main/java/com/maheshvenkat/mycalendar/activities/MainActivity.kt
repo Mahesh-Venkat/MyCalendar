@@ -7,8 +7,10 @@ import android.util.Log
 import android.widget.TextView
 
 import com.maheshvenkat.mycalendar.MyCalendarApplication
+import com.maheshvenkat.mycalendar.MyCalendarDatabase
 import com.maheshvenkat.mycalendar.R
 import com.maheshvenkat.mycalendar.businessobjects.CalendarEvent
+import com.maheshvenkat.mycalendar.utils.DatabaseInitializer
 import com.roundtableapps.timelinedayviewlibrary.EventView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -17,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        DatabaseInitializer.populateAsync(MyCalendarDatabase.getAppDataBase(this)!!)
 
         MyCalendarApplication.gsContext!!.get()
 

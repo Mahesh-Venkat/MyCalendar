@@ -1,0 +1,3 @@
+package com.maheshvenkat.myapplication.servicemodels
+
+class EventData

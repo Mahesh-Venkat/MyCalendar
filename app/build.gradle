@@ -163,6 +163,12 @@ dependencies {
     testImplementation testDependencies.mockitoCore,
             { exclude group: 'net.bytebuddy' }
     testImplementation testDependencies.mockitoInLine
+    implementation androidDependencies.rxJava
+    implementation androidDependencies.rxAndroid
+    implementation androidDependencies.roomRunTime
+    kapt androidDependencies.roomKotlinCompiler
+
+    testImplementation testDependencies.roomTesting
 
     androidTestImplementation testDependencies.hamcrestLibrary
     androidTestImplementation testDependencies.jUnit
