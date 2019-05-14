@@ -19,10 +19,10 @@ public class Event {
     private String eventDescription;
 
     @ColumnInfo(name = "start_time")
-    private String startTime;
+    private long startTime;
 
     @ColumnInfo(name = "end_time")
-    private String endTime;
+    private long endTime;
 
     @ColumnInfo(name = "theme_color")
     private String themeColor;
@@ -72,19 +72,19 @@ public class Event {
         this.eventDescription = eventDescription;
     }
 
-    public String getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public long getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
 

@@ -18,7 +18,7 @@ public abstract class MyCalendarDatabase : RoomDatabase() {
         fun getAppDataBase(context: Context): MyCalendarDatabase? {
             if (INSTANCE == null){
                 synchronized(MyCalendarDatabase::class){
-                    INSTANCE = Room.databaseBuilder(context.applicationContext, MyCalendarDatabase::class.java, "myCalendarDB").build()
+                    INSTANCE = Room.databaseBuilder(context.applicationContext, MyCalendarDatabase::class.java, "myCalendarDB").allowMainThreadQueries().build()
                 }
             }
             return INSTANCE

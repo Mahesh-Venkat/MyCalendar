@@ -10,8 +10,8 @@ import com.maheshvenkat.mycalendar.entity.Event
 @Dao
 interface EventDao {
 
-    @get:Query("SELECT * FROM event")
-    val all: List<Event>
+    @Query("SELECT * FROM event")
+    fun getAllEvents(): List<Event>
 
     @Query("SELECT * FROM event where event_ID LIKE  :eventID AND event_title LIKE :eventTitle")
     fun findByName(eventID: String, eventTitle: String): Event
