@@ -40,4 +40,5 @@
             app:minimumPercentage="0.25"
             app:numberOfRows="24" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
